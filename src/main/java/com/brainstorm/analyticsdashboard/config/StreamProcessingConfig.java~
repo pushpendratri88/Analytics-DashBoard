@@ -1,0 +1,37 @@
+package com.brainstorm.analyticsdashboard.config;
+
+import org.apache.kafka.common.serialization.Serdes;
+import org.apache.kafka.streams.KeyValue;
+import org.apache.kafka.streams.StreamsBuilder;
+import org.apache.kafka.streams.kstream.KStream;
+import org.apache.kafka.streams.kstream.Produced;
+import org.apache.kafka.streams.kstream.TimeWindows;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import java.time.Duration;
+
+@Configuration
+public class StreamProcessingConfig {
+    @Bean
+    public KStream<String, String> kStream(StreamsBuilder builder) {
+        // Explicitly set the key and value SerDes
+        KStream<String, String> stream = builder.stream("raw-events", Consumed.with(Serdes.String(), Serdes.String()));
+
+        // Example of an aggregation operation (requires state store)
+        KTable<String, Long> aggregatedTable = stream
+                .groupByKey(Grouped.with(Serdes.String(), Serdes.String()))  // specify key and value SerDe here
+                .aggregate(
+                        () -> 0L,  // Initializer
+                        (key, value, aggregate) -> aggregate + 1L,  // Aggregator function
+                        Materialized.<String, Long, KeyValueStore<Bytes, byte[]>>as("my-state-store")
+                                .withKeySerde(Serdes.String())  // specify key SerDe here
+                                .withValueSerde(Serdes.Long())  // specify value SerDe here
+                );
+
+        // Send the result to a new topic
+        aggregatedTable.toStream().to("processed-events", Produced.with(Serdes.String(), Serdes.Long()));
+
+        return stream;
+    }
+}
