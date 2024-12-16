@@ -1,3 +1,4 @@
+Directory kafka setup - cd C:\kafka_2.13-3.8.0\bin\windows
 Start Zookeeper:
 zookeeper-server-start.bat ..\..\config\zookeeper.properties
 
