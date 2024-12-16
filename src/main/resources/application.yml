@@ -1,3 +1,7 @@
 spring:
   application:
     name : AnalyticsDashboard
+  elasticsearch:
+    uris: http://localhost:9200  # Elasticsearch cluster URI
+    username: elastic  # If using security
+    password: changeme  # Replace with your password

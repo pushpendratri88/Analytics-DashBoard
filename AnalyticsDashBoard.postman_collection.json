@@ -1,0 +1,61 @@
+{
+	"info": {
+		"_postman_id": "9e7f7fb2-261d-4422-9507-6e19ad660dd3",
+		"name": "AnalyticsDashBoard",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "1100077"
+	},
+	"item": [
+		{
+			"name": "CreateEvent",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": \"1\",\r\n  \"eventType\": \"click\",\r\n  \"timestamp\": \"2024-12-12T10:00:00Z\",\r\n  \"userId\": \"user1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/elastic/events/createEvent"
+			},
+			"response": []
+		},
+		{
+			"name": "GetEvent",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/api/elastic/events/getEventById/1"
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllEvent",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/api/elastic/events/getAllEvents"
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteEvent",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:8080/api/elastic/events/deleteEvent/1"
+			},
+			"response": []
+		}
+	]
+}
