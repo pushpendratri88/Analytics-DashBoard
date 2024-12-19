@@ -1,0 +1,77 @@
+Index :
+Response Json :
+{
+  "took" : 5,
+  "timed_out" : false,
+  "_shards" : {
+    "total" : 1,
+    "successful" : 1,
+    "skipped" : 0,
+    "failed" : 0
+  },
+  "hits" : {
+    "total" : {
+      "value" : 4,
+      "relation" : "eq"
+    },
+    "max_score" : 1.0,
+    "hits" : [
+      {
+        "_index" : "processed-events-index",
+        "_id" : "014",
+        "_score" : 1.0,
+        "_source" : {
+          "clicks" : 1,
+          "@version" : "1",
+          "eventId" : "014",
+          "@timestamp" : "2024-12-19T19:06:11.675923800Z",
+          "event" : {
+            "original" : "{\"eventId\":\"014\", \"clicks\":1}"
+          }
+        }
+      },
+      {
+        "_index" : "processed-events-index",
+        "_id" : "012",
+        "_score" : 1.0,
+        "_source" : {
+          "eventId" : "012",
+          "@version" : "1",
+          "event" : {
+            "original" : "{\"eventId\":\"012\", \"clicks\":1}"
+          },
+          "@timestamp" : "2024-12-19T16:15:10.144485800Z",
+          "clicks" : 1
+        }
+      },
+      {
+        "_index" : "processed-events-index",
+        "_id" : "011",
+        "_score" : 1.0,
+        "_source" : {
+          "eventId" : "011",
+          "@version" : "1",
+          "event" : {
+            "original" : "{\"eventId\":\"011\", \"clicks\":1}"
+          },
+          "@timestamp" : "2024-12-19T15:04:55.085394900Z",
+          "clicks" : 1
+        }
+      },
+      {
+        "_index" : "processed-events-index",
+        "_id" : "%{id}",
+        "_score" : 1.0,
+        "_source" : {
+          "@timestamp" : "2024-12-19T10:28:27.063545800Z",
+          "eventId" : "002",
+          "@version" : "1",
+          "event" : {
+            "original" : "{\"eventId\":\"002\", \"clicks\":1}"
+          },
+          "clicks" : 1
+        }
+      }
+    ]
+  }
+}

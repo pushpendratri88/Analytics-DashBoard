@@ -1,0 +1,9 @@
+{
+        "clicks" => 1,
+      "@version" => "1",
+       "eventId" => "014",
+    "@timestamp" => 2024-12-19T19:06:11.675923800Z,
+         "event" => {
+        "original" => "{\"eventId\":\"014\", \"clicks\":1}"
+    }
+}
