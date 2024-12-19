@@ -9,17 +9,19 @@ import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.annotation.EnableKafkaStreams;
 
 import java.time.Duration;
 import java.util.Properties;
 
 @Configuration
+@EnableKafkaStreams
 public class KafkaStreamsConfig {
     @Bean
     public KStream<String, String> processStream() {
 
         Properties config = new Properties();
-        config.put(StreamsConfig.APPLICATION_ID_CONFIG, "my-kafka-streams-app");
+        config.put(StreamsConfig.APPLICATION_ID_CONFIG, "Analytic-Dashboard-kafka-streams-app");
         config.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         config.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         config.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
@@ -44,7 +46,7 @@ public class KafkaStreamsConfig {
                 .count();
 
         clickCounts.toStream()
-                .map((key, value) -> KeyValue.pair(key.key(), "EventId : " + key.key() + ", Clicks: " + value))
+                .map((key, value) -> KeyValue.pair(key.key(), String.format("{\"eventId\":\"%s\", \"clicks\":%d}", key.key(), value)))
                 .to("processed-events", Produced.with(Serdes.String(), Serdes.String()));
       //  transformedStream.to("processed-events");
 

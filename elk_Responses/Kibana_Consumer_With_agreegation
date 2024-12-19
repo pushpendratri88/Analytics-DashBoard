@@ -1,0 +1,76 @@
+cd4aee6', protocol='range'} failed with error: The coordinator is not aware of this member. (org.apache.kafka.clients.consumer.internals.ConsumerCoordinator)
+{ "EVENTID": "123", "EVENTTYPE": "CLICK", "TIMESTAMP": "2024-12-12T10:00:00Z", "USERID": "USER4" }
+{ "EVENTID": "123", "EVENTTYPE": "CLICK", "TIMESTAMP": "2024-12-12T10:00:00Z", "USERID": "USER5" }
+{ "EVENTID": "123", "EVENTTYPE": "CLICK", "TIMESTAMP": "2024-12-12T10:00:00Z", "USERID": "USER6" }
+{ "EVENTID": "123", "EVENTTYPE": "CLICK", "TIMESTAMP": "2024-12-12T10:00:00Z", "USERID": "USER7" }
+{ "EVENTID": "123", "EVENTTYPE": "CLICK", "TIMESTAMP": "2024-12-12T10:00:00Z", "USERID": "USER8" }
+{ "EVENTID": "123", "EVENTTYPE": "CLICK", "TIMESTAMP": "2024-12-12T10:00:00Z", "USERID": "USER9" }
+{ "EVENTID": "123", "EVENTTYPE": "CLICK", "TIMESTAMP": "2024-12-12T10:00:00Z", "USERID": "USER10" }
+
+User: { , Clicks: 2
+hi
+hhhh
+{"eventId":"111", "clicks":1}
+{"eventId":"004", "clicks":1}
+{"eventId":"123", "clicks":1}
+{"eventId":"123", "clicks":1}
+{"eventId":"123", "clicks":1}
+{"eventId":"123", "clicks":1}
+{"eventId":"123", "clicks":1}
+{"eventId":"123", "clicks":1}
+{"eventId":"123", "clicks":1}
+{"eventId":"123", "clicks":1}
+{"eventId":"123", "clicks":1}
+{"eventId":"123", "clicks":1}
+{"eventId":"123", "clicks":1}
+{"eventId":"123", "clicks":1}
+{"eventId":"123", "clicks":1}
+{"eventId":"123", "clicks":1}
+{"eventId":"123", "clicks":1}
+{"eventId":"123", "clicks":2}
+{"eventId":"111", "clicks":1}
+{"eventId":"111", "clicks":1}
+{"eventId":"004", "clicks":3}
+{"eventId":"008", "clicks":1}
+hi
+hi
+{ "EVENTID": "123", "EVENTTYPE": "CLICK", "TIMESTAMP": "2024-12-12T10:00:00Z", "USERID": "USER12" }
+User: unknown, Clicks: 1
+User: unknown, Clicks: 2
+User: unknown, Clicks: 2
+User: EVENTID, Clicks: 1
+User: EVENTID, Clicks: 1
+User: EVENTID, Clicks: 2
+User: EVENTID, Clicks: 1
+{"eventId":"005", "clicks":1}
+{"eventId":"007", "clicks":1}
+{"eventId":"005", "clicks":1}
+{"eventId":"007", "clicks":3}
+{"eventId":"009", "clicks":1}
+{ "EVENTID": "123", "EVENTTYPE": "CLICK", "TIMESTAMP": "2024-12-12T10:00:00Z", "USERID": "USER11" }
+EventId : 001, Clicks: 1
+EventId : 001, Clicks: 1
+EventId : 001, Clicks: 1
+EventId : 001, Clicks: 2
+gg
+gg
+HJ
+{"eventId":"002", "clicks":1}
+{"eventId":"002", "clicks":1}
+{"eventId":"003", "clicks":1}
+{"eventId":"006", "clicks":1}
+hi
+{"eventId":"002", "clicks":1}
+{"eventId":"002", "clicks":1}
+jjj
+{"eventId":"002", "clicks":1}
+{"eventId":"002", "clicks":1}
+{"eventId":"003", "clicks":1}
+{"eventId":"006", "clicks":3}
+{"eventId":"010", "clicks":1}
+{"eventId":"012", "clicks":1}
+{"eventId":"011", "clicks":1}
+{"eventId":"013", "clicks":1}
+{"eventId":"014", "clicks":1}
+
+
