@@ -201,3 +201,157 @@
         2. kafka stream consumes it and processes and send it to processed-events consumer
         3. Automatically picked by logstash from mentioned topic "processed-events"
         4. Send it to the ElasticSearch
+
+#############################################
+###### Kafka configuration on AWS Cloud #####
+#############################################
+
+ref- https://hostnextra.com/learn/tutorials/how-to-install-apache-kafka-on-ubuntu
+
+
+Step 1 (Update the System)  - sudo apt update -y
+
+Step 2 (Install Java) - 
+		$ sudo apt install openjdk-17-jdk -y
+	    ((Optional) Change current Java version)- update-alternatives --config java
+	    java -version
+
+Step 3 (Create Kafka User) - 
+			sudo useradd -m -s /bin/bash kafka
+			sudo passwd kafka
+				user - kafka
+			    pass - kafka
+			(Switch to the Kafka user) - sudo su - kafka
+	   
+Step 4 (Download and Extract Kafka)-	
+			mkdir ~/Downloads
+			wget https://archive.apache.org/dist/kafka/3.6.0/kafka_2.13-3.6.0.tgz -P ~/Downloads
+			tar -xvzf ~/Downloads/kafka_2.13-3.6.0.tgz -C ~/
+
+Step 5 (Configure Kafka) :
+	Configure Zookeeper: 
+		Create a data directory for Zookeeper: mkdir -p ~/kafka_2.13-3.6.0/data/zookeeper
+		Edit the Zookeeper configuration file: nano ~/kafka_2.13-3.6.0/config/zookeeper.properties
+		Update the dataDir property to point to the new data directory: dataDir=/home/kafka/kafka_2.13-3.6.0/data/zookeeper
+	Configure Kafka Broker: 	
+		Create a data directory for Kafka: 	mkdir -p ~/kafka_2.13-3.6.0/data/kafka
+		Edit the Kafka configuration file: nano ~/kafka_2.13-3.6.0/config/server.properties
+		Update the following properties: log.dirs=/home/kafka/kafka_2.13-3.6.0/data/kafka
+										 zookeeper.connect=localhost:2181
+Step 6 (Start Zookeeper and Kafka):	
+	Start Zookeeper: 
+		~/kafka_2.13-3.6.0/bin/zookeeper-server-start.sh ~/kafka_2.13-3.6.0/config/zookeeper.properties
+		
+	Start Kafka:
+		~/kafka_2.13-3.6.0/bin/kafka-server-start.sh ~/kafka_2.13-3.6.0/config/server.properties
+
+	if server unable to start due to memory issue try below commands :
+    Add Swap Space :
+		1. Create a swap file: Create a swap file:
+		2. Set the correct permissions: sudo chmod 600 /swapfile
+		3. Set up the swap space:  sudo mkswap /swapfile
+		4. Enable the swap file: sudo swapon /swapfile
+		5. Verify the swap space: swapon --show
+							      free -h
+		6. Make the swap space permanent by adding it to /etc/fstab: echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+		
+		Restart Kafka: ~/kafka_2.13-3.6.0/bin/kafka-server-start.sh ~/kafka_2.13-3.6.0/config/server.properties
+Step 7: Testing the Installation
+		
+		Create a Topic:
+			~/kafka_2.13-3.6.0/bin/kafka-topics.sh --create --topic raw-events --bootstrap-server localhost:9092 --partitions 3 --replication-factor 1
+			
+			~/kafka_2.13-3.6.0/bin/kafka-topics.sh --create --topic processed-events --bootstrap-server localhost:9092 --partitions 3 --replication-factor 1
+			
+		List Topics:	
+			~/kafka_2.13-3.6.0/bin/kafka-topics.sh --list --bootstrap-server localhost:9092
+			
+		Start a Kafka producer for raw-events:
+			~/kafka_2.13-3.6.0/bin/kafka-console-producer.sh --topic raw-events --bootstrap-server localhost:9092
+			
+		start Kafka consumer for raw-events:
+			~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --topic raw-events --from-beginning --bootstrap-server localhost:9092
+			
+		Start a Kafka producer for processed-events:
+			~/kafka_2.13-3.6.0/bin/kafka-console-producer.sh --topic processed-events --bootstrap-server localhost:9092
+			
+		start Kafka consumer for processed-events:
+			~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --topic processed-events --from-beginning --bootstrap-server localhost:9092
+
+Step 8: Setting Up Kafka as a Systemd Service
+		Create a new systemd service file for Zookeeper:
+			sudo nano /etc/systemd/system/zookeeper.service
+		
+		Add the following content:
+			[Unit]
+			Description=Apache Zookeeper server
+			Documentation=http://zookeeper.apache.org
+			After=network.target
+
+			[Service]
+			Type=simple
+			User=kafka
+			ExecStart=/home/kafka/kafka_2.13-3.6.0/bin/zookeeper-server-start.sh /home/kafka/kafka_2.13-3.6.0/config/zookeeper.properties
+			ExecStop=/home/kafka/kafka_2.13-3.6.0/bin/zookeeper-server-stop.sh
+			Restart=on-abnormal
+
+			[Install]
+			WantedBy=multi-user.target
+		cltr + x
+		y to save file 
+		enter
+			
+		Create a new systemd service file for Kafka:
+			sudo nano /etc/systemd/system/kafka.service
+			
+		Add the following content:
+			[Unit]
+			Description=Apache Kafka server
+			Documentation=http://kafka.apache.org/documentation.html
+			After=network.target zookeeper.service
+
+			[Service]
+			Type=simple
+			User=kafka
+			ExecStart=/home/kafka/kafka_2.13-3.6.0/bin/kafka-server-start.sh /home/kafka/kafka_2.13-3.6.0/config/server.properties
+			ExecStop=/home/kafka/kafka_2.13-3.6.0/bin/kafka-server-stop.sh
+			Restart=on-abnormal
+
+			[Install]
+			WantedBy=multi-user.target
+			
+		cltr + x
+		y to save file 
+		enter
+		
+		Start and Enable the Services Reload systemd to apply the new service files:
+			sudo systemctl daemon-reload
+			
+		Start and enable Zookeeper:
+			sudo systemctl start zookeeper
+            sudo systemctl enable zookeeper
+			
+		Start and enable Kafka:
+			sudo systemctl start kafka
+			sudo systemctl enable kafka
+
+Step 9 : Kafka Configuration to allow the traffic from anywhere
+        Update Kafka Configuration:
+            nano /home/kafka/kafka_2.13-3.6.0/config/server.properties
+        Update the following properties:
+            listeners=PLAINTEXT://0.0.0.0:9092
+            advertised.listeners=PLAINTEXT://13.203.157.163:9092
+        Save the file and restart Kafka:
+            ~/kafka_2.13-3.6.0/bin/kafka-server-stop.sh
+            ~/kafka_2.13-3.6.0/bin/kafka-server-start.sh -daemon /kafka_2.13-3.6.0/config/server.properties
+
+        Open Port 9092 on AWS:
+            Go to the AWS Management Console.
+            Navigate to EC2 > Security Groups.
+            Edit the inbound rules of your security group add new rule for port 9092 to allow traffic on port 9092 from your Spring Boot application's IP (or 0.0.0.0/0 for testing purposes, though this is less secure).
+
+        Update Spring Boot Configuration:
+            config.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "13.203.157.163:9092");
+										
+								
+
