@@ -9,11 +9,9 @@ import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.kafka.annotation.EnableKafkaStreams;
 import java.util.Properties;
 
 @Configuration
-@EnableKafkaStreams
 public class KafkaStreamsConfig {
 
     private final EventProcessingService eventProcessingService;
@@ -42,8 +40,6 @@ public class KafkaStreamsConfig {
         KafkaStreams streams = new KafkaStreams(builder.build(), config);
         streams.start();
 
-        // Print topology
-        System.out.println(streams.toString());
         Runtime.getRuntime().addShutdownHook(new Thread(streams::close));
 
         return sourceStream;

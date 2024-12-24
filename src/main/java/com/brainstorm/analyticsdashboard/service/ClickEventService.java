@@ -14,6 +14,7 @@ public class ClickEventService implements EventService{
     @Override
     public void processEvent(KStream<String, String> sourceStream) {
         // Filter for "click" events and transform
+
         KStream<String, String> transformedStream = sourceStream
                 .filter((key, value) -> value.contains("click"))
                 .mapValues(value -> value.toUpperCase());
@@ -26,18 +27,21 @@ public class ClickEventService implements EventService{
         // Aggregate the number of clicks per user
         KTable<Windowed<String>, Long> clickCounts = userClicks
                 .groupByKey()
-                .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofDays(1)))
+                .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofMinutes(1)))
                 .count();
 
         // Send to output topic
         clickCounts.toStream()
                 .map((key, value) -> KeyValue.pair(key.key(), String.format("{\"eventId\":\"%s\", \"clicks\":%d}", key.key(), value)))
-                .to("processed-click-events");
+                .to("processed-events");
+
+//        transformedStream.to("processed-events");
     }
 
     private String extractUserId(String value) {
         try {
-            return value.split("\"")[3]; // Adjust this to your JSON parsing logic
+   //         return value.split("\"")[3]; // Adjust this to your JSON parsing logic
+            return value.split("\"userId\":\"")[1].split("\"")[0];
         } catch (Exception e) {
             return "unknown";
         }
