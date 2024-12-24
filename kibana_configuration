@@ -1,0 +1,22 @@
+#############################################
+########## Kibana Setup and Process #########
+#############################################
+
+        Kibana Installation Directory -
+
+        disabling this setting - "--openssl-legacy-provider" in the node.options from directory "C:\elastic-stack\kibana-8.17.0\config"
+
+        Goto directory "C:\elastic-stack\kibana-8.17.0\bin" and run "kibana.bat"
+
+        Elasticsearch and Kibana Communication Health check If SSL is disabled:
+                - curl -X GET http://localhost:9200/_cluster/health
+        Elasticsearch and Kibana Communication Health check If SSL is enabled:
+                - curl -X GET --cacert /path/to/http_ca.crt https://localhost:9200/_cluster/health
+
+        Login Cred -
+        url - http://localhost:5601/?code=489966
+        username - elastic
+        password - Z9Ei3Etp-LYD4Ll*IsGs
+        HTTP CA certificate SHA-256 fingerprint: f0f0da6d4f1da1d1d4e33bbae76cf34a742de917df2ff618a03f6b5e8a89f4ed
+        enrollment token -eyJ2ZXIiOiI4LjE0LjAiLCJhZHIiOlsiMTkyLjE2OC4xLjk6OTIwMCJdLCJmZ3IiOiJmMGYwZGE2ZDRmMWRhMWQxZDRlMzNiYmFlNzZjZjM0YTc0MmRlOTE3ZGYyZmY2MThhMDNmNmI1ZThhODlmNGVkIiwia2V5IjoiZGpibjNaTUJUOG1FUTFkLVNaZlI6UVZDeEpiNzRSemlYbEQ4Tkh6OEFnZyJ9
+

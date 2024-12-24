@@ -1,0 +1,8 @@
+package com.brainstorm.analyticsdashboard.service;
+
+import org.apache.kafka.streams.kstream.KStream;
+
+@FunctionalInterface
+public interface EventService {
+    void processEvent(KStream<String, String> sourceStream);
+}

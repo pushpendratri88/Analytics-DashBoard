@@ -64,6 +64,25 @@
                                    # Additional nodes can still join the cluster later
                                    cluster.initial_master_nodes: ["HMECL-CD2403THV"]
 
+        Enabled security feature - xpack.security.enabled: true
+
+                                   xpack.security.enrollment.enabled: true
+
+                                   # Enable encryption for HTTP API client connections, such as Kibana, Logstash, and Agents
+                                   xpack.security.http.ssl:
+                                     enabled: true
+                                     key: certs/instance.key
+                                     certificate: certs/instance.crt
+
+                                   # Enable encryption and mutual authentication between cluster nodes
+                                   xpack.security.transport.ssl:
+                                     enabled: true
+                                     key: certs/instance.key
+                                     certificate: certs/instance.crt
+                                   # Create a new cluster with the current node only
+                                   # Additional nodes can still join the cluster later
+                                   cluster.initial_master_nodes: ["elastic"]
+
         Cred:
             username - elastic
             password - Z9Ei3Etp-LYD4Ll*IsGs
@@ -90,7 +109,20 @@
         Return all documents in the index:
             curl -X GET "http://localhost:9200/processed-events-index/_search?pretty"
 
-        For Connectivity issue between ElasticSearch and kibana:###########################
+        For Connectivity issue between ElasticSearch and kibana:
+            1. Generate a Self-Signed Certificate:
+                 elasticsearch-certutil cert --pem --self-signed --out config/certs/certs.zip
+
+            2. Unzip the generated certificates: C:\elastic-stack\elasticsearch-8.17.0\config\certs
+
+            3. Configure Elasticsearch: Update the elasticsearch.yml file to use the generated certificates:
+                    xpack.security.enabled: true
+                    xpack.security.http.ssl.enabled: true
+                    xpack.security.http.ssl.key: config/certs/elastic-certificates.key
+                    xpack.security.http.ssl.certificate: config/certs/elastic-certificates.crt
+             4. Copy generated certificates to the kibana directory: C:\elastic-stack\kibana-8.17.0\config\certs
+             5. Update the kibana.yml with the certificate as below
+                    elasticsearch.ssl.certificateAuthorities: ['C:\elastic-stack\kibana-8.17.0\config\certs\instance.crt']
 
 #############################################
 ########## Kibana Setup and Process #########

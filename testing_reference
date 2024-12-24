@@ -1,0 +1,27 @@
+#############################################
+########## Reference #########
+#############################################
+        kafka connect - https://risingwave.com/blog/how-to-send-data-from-kafka-to-elasticsearch-a-step-by-step-guide/
+        Kafka,logstash,elasticsearch, kibana - https://www.youtube.com/watch?v=IFfULE1VxE0
+
+        Kafka,logstash,elasticsearch, kibana - https://selftuts.in/what-is-elk-stack/
+
+#############################################
+########## Ports #########
+#############################################
+
+        Kafka-Manager - http://localhost:9000
+        kafka - http://localhost:9092
+        Zookeeper - http://localhost:2181
+        ElasticSearch - http://localhost:9200
+        Kibana - http://localhost:5601
+        logstash - http://localhost:9600
+
+#############################################
+########## Testing Steps #########
+#############################################
+        1. Send message from raw-events Producer
+           json -  {"eventId":"1","eventType":"click","timestamp":"2024-12-12T10:00:00Z","userId":"user1"}
+        2. kafka stream consumes it and processes and send it to processed-events consumer
+        3. Automatically picked by logstash from mentioned topic "processed-events"
+        4. Send it to the ElasticSearch

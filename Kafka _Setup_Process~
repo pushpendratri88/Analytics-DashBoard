@@ -1,0 +1,30 @@
+Directory kafka setup - cd C:\kafka_2.13-3.8.0\bin\windows
+Start Zookeeper:
+zookeeper-server-start.bat ..\..\config\zookeeper.properties
+
+Start kafka-server:
+kafka-server-start.bat ..\..\config\server.properties
+
+Topic creation:
+kafka-topics.bat --create --topic raw-events --bootstrap-server localhost:9092 --replication-factor 1 --partitions 3
+
+kafka-topics.bat --create --topic processed-events --bootstrap-server localhost:9092 --replication-factor 1 --partitions 3
+
+Start Producer :
+kafka-console-producer.bat --broker-list localhost:9092 --topic raw-events
+
+Start Consumer :
+kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic raw-events --from-beginning
+
+Start Producer :
+kafka-console-producer.bat --broker-list localhost:9092 --topic processed-events
+
+Start Consumer :
+kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic processed-events --from-beginning
+
+
+
+Testing Steps
+
+1. Send message from raw-events Producer
+2. kafka stream consumes it and processes and send it to processed-events consumer

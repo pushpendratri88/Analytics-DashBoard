@@ -1,0 +1,55 @@
+#############################################
+###### Elastic Search Setup and Process #####
+#############################################
+
+        Elastic search Installation Directory -  cd C:\elastic-stack\elasticsearch-8.17.0
+        Unset or Correct JAVA_HOME:
+            set JAVA_HOME=
+            set JAVA_HOME=C:\elastic-stack\elasticsearch-8.17.0\jdk
+
+        Disable security feature - xpack.security.enabled: false
+
+                                   xpack.security.enrollment.enabled: false
+
+                                   # Enable encryption for HTTP API client connections, such as Kibana, Logstash, and Agents
+                                   xpack.security.http.ssl:
+                                     enabled: false
+                                     keystore.path: certs/http.p12
+
+                                   # Enable encryption and mutual authentication between cluster nodes
+                                   xpack.security.transport.ssl:
+                                     enabled: false
+                                     verification_mode: certificate
+                                     keystore.path: certs/transport.p12
+                                     truststore.path: certs/transport.p12
+                                   # Create a new cluster with the current node only
+                                   # Additional nodes can still join the cluster later
+                                   cluster.initial_master_nodes: ["HMECL-CD2403THV"]
+
+        Cred:
+            username - elastic
+            password - Z9Ei3Etp-LYD4Ll*IsGs
+            HTTP CA certificate SHA-256 fingerprint: f0f0da6d4f1da1d1d4e33bbae76cf34a742de917df2ff618a03f6b5e8a89f4ed
+            enrollment token -eyJ2ZXIiOiI4LjE0LjAiLCJhZHIiOlsiMTkyLjE2OC4xLjk6OTIwMCJdLCJmZ3IiOiJmMGYwZGE2ZDRmMWRhMWQxZDRlMzNiYmFlNzZjZjM0YTc0MmRlOTE3ZGYyZmY2MThhMDNmNmI1ZThhODlmNGVkIiwia2V5IjoiZGpibjNaTUJUOG1FUTFkLVNaZlI6UVZDeEpiNzRSemlYbEQ4Tkh6OEFnZyJ9
+            new enrollment token - eyJ2ZXIiOiI4LjE0LjAiLCJhZHIiOlsiMTkyLjE2OC4xLjk6OTIwMCJdLCJmZ3IiOiJmMGYwZGE2ZDRmMWRhMWQxZDRlMzNiYmFlNzZjZjM0YTc0MmRlOTE3ZGYyZmY2MThhMDNmNmI1ZThhODlmNGVkIiwia2V5IjoiUVNjNjM1TUJSVXRUODdqeTQtdjM6c1dCbE9GSFBRUXFVRFVxUW5pdElQZyJ9
+            Note - Configure other nodes to join this cluster:
+                   On this node:
+                     Create an enrollment token with `bin/elasticsearch-create-enrollment-token -s node`.
+                     Uncomment the transport.host setting at the end of config/elasticsearch.yml.
+                     Restart Elasticsearch.
+                   On other nodes:
+                     Start Elasticsearch with `bin/elasticsearch --enrollment-token <token>`, using the enrollment token that you generated.
+
+        Start server:
+            Goto directory "C:\elastic-stack\elasticsearch-8.17.0\bin" and run "elasticsearch.bat"
+
+        Generate New Token :
+            Goto directory "C:\elastic-stack\elasticsearch-8.17.0\bin" run  "elasticsearch-create-enrollment-token -s kibana"
+
+        Lists all indices in Elasticsearch:
+            curl -X GET "http://localhost:9200/_cat/indices?v"
+
+        Return all documents in the index:
+            curl -X GET "http://localhost:9200/processed-events-index/_search?pretty"
+
+        For Connectivity issue between ElasticSearch and kibana:###########################
