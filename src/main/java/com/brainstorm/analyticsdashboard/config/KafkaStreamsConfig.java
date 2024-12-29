@@ -33,8 +33,10 @@ public class KafkaStreamsConfig {
         // Split the stream into multiple substreams based on event types
         KStream<String, String>[] branches = sourceStream.branch(
                 (key, value) -> value.contains("click"),    // Branch 1: Click events
-                (key, value) -> value.contains("view"),     // Branch 2: View events
-                (key, value) -> value.contains("purchase"), // Branch 3: Purchase events
+                (key, value) -> value.contains("view"),
+                (key, value) -> value.contains("search"),// Branch 2: View events
+                (key, value) -> value.contains("purchase"),
+                (key, value) -> value.contains("error"),// Branch 3: Purchase events
                 (key, value) -> true                        // Default: All other events
         );
 
@@ -42,10 +44,14 @@ public class KafkaStreamsConfig {
         processClickEvents(branches[0]);
         // Process "view" events
         processViewEvents(branches[1]);
+        // Process "search" events
+        processSearchEvents(branches[2]);
         // Process "purchase" events
-        processPurchaseEvents(branches[2]);
+        processPurchaseEvents(branches[3]);
+        // Process "error" events
+        processErrorEvents(branches[4]);
         // Log or handle all other events
-        branches[3].foreach((key, value) -> System.err.println("Unhandled event: " + value));
+        branches[5].foreach((key, value) -> System.err.println("Unhandled event: " + value));
 
 
         KafkaStreams streams = new KafkaStreams(builder.build(), config);
@@ -53,6 +59,30 @@ public class KafkaStreamsConfig {
 
         Runtime.getRuntime().addShutdownHook(new Thread(streams::close));
         return sourceStream;
+    }
+
+    private void processErrorEvents(KStream<String, String> errorStream) {
+        errorStream
+                .mapValues(value -> value.toUpperCase())
+                .selectKey((key, value) -> extractUserId(value))
+                .groupByKey(Grouped.with(Serdes.String(), Serdes.String()))
+                .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofMinutes(1)))
+                .count()
+                .toStream()
+                .map((key, value) -> KeyValue.pair(key.key(), String.format("{\"userId\":\"%s\", \"errors\":%d}", key.key(), value)))
+                .to("processed-events", Produced.with(Serdes.String(), Serdes.String()));
+    }
+
+    private void processSearchEvents(KStream<String, String> searchStream) {
+        searchStream
+                .mapValues(value -> value.toUpperCase())
+                .selectKey((key, value) -> extractUserId(value))
+                .groupByKey(Grouped.with(Serdes.String(), Serdes.String()))
+                .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofMinutes(1)))
+                .count()
+                .toStream()
+                .map((key, value) -> KeyValue.pair(key.key(), String.format("{\"userId\":\"%s\", \"search\":%d}", key.key(), value)))
+                .to("processed-events", Produced.with(Serdes.String(), Serdes.String()));
     }
 
     private void processClickEvents(KStream<String, String> clickStream) {
@@ -69,7 +99,8 @@ public class KafkaStreamsConfig {
 
     private void processViewEvents(KStream<String, String> viewStream) {
         viewStream
-                .mapValues(value -> value.toUpperCase())
+                .mapValues(value ->
+                        value.toUpperCase())
                 .selectKey((key, value) -> extractUserId(value))
                 .groupByKey(Grouped.with(Serdes.String(), Serdes.String()))
                 .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofMinutes(1)))
@@ -95,7 +126,7 @@ public class KafkaStreamsConfig {
         // Simple parsing logic to extract userId from JSON string (update as needed)
         // Assuming the value is in JSON format: {"eventId":"1","eventType":"click","timestamp":"2024-12-12T10:00:00Z","userId":"user1"}
         try {
-            return value.split("\"USERID\":\"")[1].split("\"")[0];
+            return value.split("\"USERID\"")[1].split("\"")[1];
         } catch (Exception e) {
             return "unknown";
         }

@@ -1,0 +1,57 @@
+Step 1 — Installing and Configuring Elasticsearch
+       - curl -fsSL https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo gpg --dearmor -o /usr/share/keyrings/elastic.gpg
+       - echo "deb [signed-by=/usr/share/keyrings/elastic.gpg] https://artifacts.elastic.co/packages/7.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-7.x.list
+       - sudo apt update
+       - sudo apt install elasticsearch
+
+Step 2 — Configuring Elasticsearch
+       - sudo nano /etc/elasticsearch/elasticsearch.yml
+       - Update the following properties:
+            /etc/elasticsearch/elasticsearch.yml
+            . . .
+            # ---------------------------------- Network -----------------------------------
+            #
+            # Set the bind address to a specific IP (IPv4 or IPv6):
+            #
+            network.host: localhost
+            . . .
+       - sudo systemctl start elasticsearch
+       - sudo systemctl enable elasticsearch
+
+Step 3 — Securing Elasticsearch
+       - sudo ufw allow from 198.51.100.0 to any port 9200
+       - sudo ufw allow from 13.233.144.207 to any port 9200
+       - sudo ufw allow from 0.0.0.0 to any port 22
+       - sudo ufw enable
+       - sudo ufw status
+        Output should look like this:
+                Status: active
+
+                To                         Action      From
+                --                         ------      ----
+                9200                       ALLOW       198.51.100.0
+                9200                       ALLOW       13.233.144.207
+                22                         ALLOW       0.0.0.0
+
+Step 4 — Testing Elasticsearch
+        - curl -X GET 'http://localhost:9200'
+        Output should look like this:
+                {
+                  "name" : "ip-172-31-2-137",
+                  "cluster_name" : "elasticsearch",
+                  "cluster_uuid" : "RdaJrttSQnm4G_0qxaEi8g",
+                  "version" : {
+                    "number" : "7.17.26",
+                    "build_flavor" : "default",
+                    "build_type" : "deb",
+                    "build_hash" : "f40328375bfa289242f942fb3d992032ab662e14",
+                    "build_date" : "2024-11-28T08:05:55.550508263Z",
+                    "build_snapshot" : false,
+                    "lucene_version" : "8.11.3",
+                    "minimum_wire_compatibility_version" : "6.8.0",
+                    "minimum_index_compatibility_version" : "6.0.0-beta1"
+                  },
+                  "tagline" : "You Know, for Search"
+                }
+        To perform a more thorough check of Elasticsearch execute the following command:
+        - curl -X GET 'http://localhost:9200/_nodes?pretty'
