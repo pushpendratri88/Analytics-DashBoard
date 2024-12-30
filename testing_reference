@@ -9,13 +9,21 @@
 #############################################
 ########## Ports #########
 #############################################
+        Local URL:
+            Kafka-Manager - http://localhost:9000
+            kafka - http://localhost:9092
+            Zookeeper - http://localhost:2181
+            ElasticSearch - http://localhost:9200
+            Kibana - http://localhost:5601
+            logstash - http://localhost:9600
 
-        Kafka-Manager - http://localhost:9000
-        kafka - http://localhost:9092
-        Zookeeper - http://localhost:2181
-        ElasticSearch - http://localhost:9200
-        Kibana - http://localhost:5601
-        logstash - http://localhost:9600
+        AWS URL:
+             Kafka-Manager - http://localhost:9000
+             kafka - http://13.203.157.163:9092
+             Zookeeper - http://13.203.157.163:2181
+             ElasticSearch - http://15.206.212.238:9200
+             Kibana - http://13.201.83.66:5601
+             logstash - http://3.109.157.194:9600
 
 #############################################
 ########## Testing Steps #########

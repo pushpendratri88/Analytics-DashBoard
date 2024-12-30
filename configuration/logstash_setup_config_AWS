@@ -1,0 +1,79 @@
+Step 1: Update and Upgrade Packages
+    - sudo apt update
+    - sudo apt upgrade -y
+Step 2: Step 2: Install Java (Prerequisite)
+    - sudo apt install -y openjdk-11-jdk
+    - java -version
+Step 3: Add the Elastic Repository
+    - Install the Elastic GPG key: wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+    - Add the Elastic repository: echo "deb https://artifacts.elastic.co/packages/8.x/apt stable main" | sudo tee /etc/apt/sources.list.d/elastic-8.x.list
+Step 4: Install Logstash
+    - sudo apt update
+    - sudo apt install logstash -y
+Step 5: Configure Logstash
+    - cd /etc/logstash/conf.d/
+    - sudo touch kafka-to-elasticsearch.conf
+    - sudo nano /etc/logstash/conf.d/kafka-to-elasticsearch.conf
+    - Add the following configuration:
+        input {
+          kafka {
+            bootstrap_servers => "13.203.157.163:9092" # Replace with your Kafka broker address
+            topics => ["processed-events"]        # Replace with your Kafka topic
+        #    group_id => "logstash-group"         # Optional: consumer group ID
+            codec => "json"                       # Specify the codec if data is in JSON format
+          }
+        }
+
+        filter {
+          # Optional: Add any data transformation or filtering logic here
+          # Example:
+          # mutate {
+          #   rename => { "field1" => "new_field1" }
+          # }
+        }
+
+        output {
+          elasticsearch {
+            hosts => ["http://15.206.212.238:9200"]    # Replace with your Elasticsearch URL
+            index => "processed-events-index"     # Replace with your desired index name
+                document_id => "%{[eventId]}"         # Unique ID for deduplication
+          }
+
+         # Optional: Debugging output
+          stdout {
+            codec => rubydebug
+          }
+        }
+
+
+        output {
+          elasticsearch {
+            hosts => ["15.206.212.238:9200"]    # Replace with your Elasticsearch URL
+            index => "processed-events-index"     # Replace with your desired index name
+        	document_id => "%{[eventId]}"         # Unique ID for deduplication
+          }
+
+         # Optional: Debugging output
+          stdout {
+            codec => rubydebug
+          }
+        }
+Step 6 —  Add Swap Space :
+             1. Create a swap file: Create a swap file: sudo fallocate -l 1G /swapfile
+             2. Set the correct permissions: sudo chmod 600 /swapfile
+             3. Set up the swap space:  sudo mkswap /swapfile
+             4. Enable the swap file: sudo swapon /swapfile
+             5. Verify the swap space: swapon --show
+                                       free -h
+             6. Make the swap space permanent by adding it to /etc/fstab:
+                 - echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+
+Step 7: Start and Enable Logstash Service
+    - sudo systemctl start logstash
+    - sudo systemctl enable logstash
+    - sudo systemctl status logstash
+
+Step 8 : Logs
+    - sudo journalctl -u logstash -f
+
+

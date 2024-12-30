@@ -50,7 +50,7 @@ Step 6 (Start Zookeeper and Kafka):
 
 	if server unable to start due to memory issue try below commands :
         Add Swap Space :
-            1. Create a swap file: Create a swap file:
+            1. Create a swap file: Create a swap file: sudo fallocate -l 1G /swapfile
             2. Set the correct permissions: sudo chmod 600 /swapfile
             3. Set up the swap space:  sudo mkswap /swapfile
             4. Enable the swap file: sudo swapon /swapfile
