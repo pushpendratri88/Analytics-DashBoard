@@ -1,0 +1,23 @@
+======================================================
+deployment steps for Spring Boot application in Linux VM
+=======================================================
+
+1) Clone Git Repo
+		$ git clone https://github.com/pushpendratri88/AnalyticsDashBoard.git
+		OR
+		cd AnalyticsDashBoard/
+		git pull
+
+2) Build app using maven
+		$ mvn clean package
+
+3) Run the jar file
+		$ java -jar target/AnalyticsDashboard-0.0.1-SNAPSHOT.jar
+
+4) Enable Embedded Server port num in security group inbound rule
+   9092
+
+5) Enable Embedded Server port num in security group outbound rule
+    9092
+
+=========================================================================
