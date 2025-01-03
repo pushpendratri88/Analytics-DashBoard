@@ -71,9 +71,13 @@ Step 6 —  Add Swap Space :
 Step 7: Start and Enable Logstash Service
     - sudo systemctl start logstash
     - sudo systemctl enable logstash
-    - sudo systemctl status logstash
 
 Step 8 : Logs
     - sudo journalctl -u logstash -f
 
+step 8 : stop logstash & Restart logstash
+    - sudo systemctl stop logstash
+    - sudo systemctl restart logstash
 
+Step 10 : server status
+    - sudo systemctl status logstash

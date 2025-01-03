@@ -70,7 +70,7 @@ public class KafkaStreamsConfig {
                 .count()
                 .toStream()
                 .map((key, value) -> KeyValue.pair(key.key(), String.format("{\"userId\":\"%s\", \"errors\":%d}", key.key(), value)))
-                .to("processed-events", Produced.with(Serdes.String(), Serdes.String()));
+                .to("error-processed-events", Produced.with(Serdes.String(), Serdes.String()));
     }
 
     private void processSearchEvents(KStream<String, String> searchStream) {
@@ -82,7 +82,7 @@ public class KafkaStreamsConfig {
                 .count()
                 .toStream()
                 .map((key, value) -> KeyValue.pair(key.key(), String.format("{\"userId\":\"%s\", \"search\":%d}", key.key(), value)))
-                .to("processed-events", Produced.with(Serdes.String(), Serdes.String()));
+                .to("search-processed-events", Produced.with(Serdes.String(), Serdes.String()));
     }
 
     private void processClickEvents(KStream<String, String> clickStream) {
@@ -94,7 +94,7 @@ public class KafkaStreamsConfig {
                 .count()
                 .toStream()
                 .map((key, value) -> KeyValue.pair(key.key(), String.format("{\"userId\":\"%s\", \"clicks\":%d}", key.key(), value)))
-                .to("processed-events", Produced.with(Serdes.String(), Serdes.String()));
+                .to("click-processed-events", Produced.with(Serdes.String(), Serdes.String()));
     }
 
     private void processViewEvents(KStream<String, String> viewStream) {
@@ -107,7 +107,7 @@ public class KafkaStreamsConfig {
                 .count()
                 .toStream()
                 .map((key, value) -> KeyValue.pair(key.key(), String.format("{\"userId\":\"%s\", \"views\":%d}", key.key(), value)))
-                .to("processed-events", Produced.with(Serdes.String(), Serdes.String()));
+                .to("view-processed-events", Produced.with(Serdes.String(), Serdes.String()));
     }
 
     private void processPurchaseEvents(KStream<String, String> purchaseStream) {
@@ -119,7 +119,7 @@ public class KafkaStreamsConfig {
                 .count()
                 .toStream()
                 .map((key, value) -> KeyValue.pair(key.key(), String.format("{\"userId\":\"%s\", \"purchases\":%d}", key.key(), value)))
-                .to("processed-events", Produced.with(Serdes.String(), Serdes.String()));
+                .to("purchase-processed-events", Produced.with(Serdes.String(), Serdes.String()));
     }
 
     private String extractUserId(String value) {

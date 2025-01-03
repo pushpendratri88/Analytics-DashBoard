@@ -69,11 +69,32 @@ Step 7: Testing the Installation
 
 			-  ~/kafka_2.13-3.6.0/bin/kafka-topics.sh --create --topic processed-events --bootstrap-server localhost:9092 --partitions 3 --replication-factor 1
 
+			- ~/kafka_2.13-3.6.0/bin/kafka-topics.sh --create --topic error-processed-events --bootstrap-server localhost:9092 --partitions 3 --replication-factor 1
+
+            - ~/kafka_2.13-3.6.0/bin/kafka-topics.sh --create --topic search-processed-events --bootstrap-server localhost:9092 --partitions 3 --replication-factor 1
+
+            - ~/kafka_2.13-3.6.0/bin/kafka-topics.sh --create --topic click-processed-events --bootstrap-server localhost:9092 --partitions 3 --replication-factor 1
+
+            - ~/kafka_2.13-3.6.0/bin/kafka-topics.sh --create --topic view-processed-events --bootstrap-server localhost:9092 --partitions 3 --replication-factor 1
+
+            - ~/kafka_2.13-3.6.0/bin/kafka-topics.sh --create --topic purchase-processed-events --bootstrap-server localhost:9092 --partitions 3 --replication-factor 1
+
 		List Topics:
 			-  ~/kafka_2.13-3.6.0/bin/kafka-topics.sh --list --bootstrap-server localhost:9092
 
-		 List Consumer Groups:
-                ~/kafka_2.13-3.6.0/bin/kafka-consumer-groups.sh --list --bootstrap-server localhost:9092
+        Create a consumer group:
+            -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic error-processed-events --group error-processed-group
+
+            -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic search-processed-events --group search-processed-group
+
+            -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic click-processed-events --group click-processed-group
+
+            -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic view-processed-events --group view-processed-group
+
+            -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic purchase-processed-events --group purchase-processed-group
+
+		List Consumer Groups:
+             -  ~/kafka_2.13-3.6.0/bin/kafka-consumer-groups.sh --list --bootstrap-server localhost:9092
 
 		Start a Kafka producer for raw-events:
 			-  ~/kafka_2.13-3.6.0/bin/kafka-console-producer.sh --topic raw-events --bootstrap-server localhost:9092
