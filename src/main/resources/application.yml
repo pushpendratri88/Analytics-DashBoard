@@ -1,3 +1,8 @@
 spring:
   application:
     name : AnalyticsDashboard
+
+logging:
+  file:
+    name: app.log
+

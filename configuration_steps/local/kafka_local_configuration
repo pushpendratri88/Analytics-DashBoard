@@ -3,36 +3,58 @@
 ######### Kafka Setup and Process ###########
 #############################################
 
-        Directory kafka setup - cd C:\kafka_2.13-3.8.0\bin\windows
-        Start Zookeeper:
-        zookeeper-server-start.bat ..\..\config\zookeeper.properties
+Directory kafka setup - cd C:\kafka_2.13-3.8.0\bin\windows
+Start Zookeeper:
+      zookeeper-server-start.bat ..\..\config\zookeeper.properties
 
-        Start kafka-server:
-        kafka-server-start.bat ..\..\config\server.properties
+Start kafka-server:
+      kafka-server-start.bat ..\..\config\server.properties
 
 
-        Topic creation:
-        kafka-topics.bat --create --topic raw-events --bootstrap-server localhost:9092 --replication-factor 1 --partitions 3
+Topic creation:
+      kafka-topics.bat --create --topic raw-events --bootstrap-server localhost:9092 --replication-factor 1 --partitions 3
 
-        kafka-topics.bat --create --topic processed-events --bootstrap-server localhost:9092 --replication-factor 1 --partitions 3
+      kafka-topics.bat --create --topic processed-events --bootstrap-server localhost:9092 --replication-factor 1 --partitions 3
 
-        Start raw-events Producer :
-        kafka-console-producer.bat --broker-list localhost:9092 --topic raw-events
+      kafka-topics.bat --create --topic error-processed-events --bootstrap-server localhost:9092 --replication-factor 1 --partitions 3
 
-        Start raw-events Consumer :
-        kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic raw-events --from-beginning
+      kafka-topics.bat --create --topic search-processed-events --bootstrap-server localhost:9092 --replication-factor 1 --partitions 3
 
-        Start processed-events Producer :
-        kafka-console-producer.bat --broker-list localhost:9092 --topic processed-events
+      kafka-topics.bat --create --topic click-processed-events --bootstrap-server localhost:9092 --replication-factor 1 --partitions 3
 
-        Start processed-events Consumer :
-        kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic processed-events --from-beginning
+      kafka-topics.bat --create --topic view-processed-events --bootstrap-server localhost:9092 --replication-factor 1 --partitions 3
 
-        # Get All Topics in Kafka
-        kafka-topics.bat --list --bootstrap-server localhost:9092
+      kafka-topics.bat --create --topic purchase-processed-events --bootstrap-server localhost:9092 --replication-factor 1 --partitions 3
 
-        # Get All Consumer Groups in Kafka
-        kafka-consumer-groups.bat --list --bootstrap-server localhost:9092
+Create a consumer group:
+      kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic error-processed-events --group error-processed-group
+
+      kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic search-processed-events --group search-processed-group
+
+      kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic click-processed-events --group click-processed-group
+
+      kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic view-processed-events --group view-processed-group
+
+      kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic purchase-processed-events --group purchase-processed-group
+
+
+Start raw-events Producer :
+      kafka-console-producer.bat --broker-list localhost:9092 --topic raw-events
+
+Start raw-events Consumer :
+      kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic raw-events --from-beginning
+
+Start processed-events Producer :
+      kafka-console-producer.bat --broker-list localhost:9092 --topic processed-events
+
+Start processed-events Consumer :
+      kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic processed-events --from-beginning
+
+# Get All Topics in Kafka
+      kafka-topics.bat --list --bootstrap-server localhost:9092
+
+# Get All Consumer Groups in Kafka
+      kafka-consumer-groups.bat --list --bootstrap-server localhost:9092
 
 
 

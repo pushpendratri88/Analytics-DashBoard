@@ -6,53 +6,84 @@
         Create file "C:\logstash\config\kafka-to-elasticsearch.conf" in the config directory
         File Content:
                     input {
-                        kafka {
-                          bootstrap_servers => "localhost:9092" # Replace with your Kafka broker address
-                          topics => ["processed-events"]        # Replace with your Kafka topic
-                      #    group_id => "logstash-group"         # Optional: consumer group ID
-                          codec => "json"                       # Specify the codec if data is in JSON format
-                        }
+                      kafka {
+                        bootstrap_servers => "localhost:9092" # Replace with your Kafka broker address
+                        topics => ["click-processed-events"]        # Replace with your Kafka topic
+                        group_id => "click-processed-events-group"         # Optional: consumer group ID
+                        codec => "json"                       # Specify the codec if data is in JSON format
+                    	decorate_events => true  			  # Ensures metadata like `[@metadata][kafka][topic]` is added
                       }
-
-                      filter {
-                        # Optional: Add any data transformation or filtering logic here
-                        # Example:
-                        # mutate {
-                        #   rename => { "field1" => "new_field1" }
-                        # }
+                      kafka {
+                        bootstrap_servers => "localhost:9092"
+                        topics => ["view-processed-events"]
+                        group_id => "view-processed-events-group"
+                        codec => "json"
+                        decorate_events => true
                       }
+                      kafka {
+                        bootstrap_servers => "localhost:9092"
+                        topics => ["purchase-processed-events"]
+                        group_id => "purchase-processed-events-group"
+                        codec => "json"
+                    	decorate_events => true
+                      }
+                      kafka {
+                        bootstrap_servers => "localhost:9092"
+                        topics => ["search-processed-events"]
+                        group_id => "search-processed-events-group"
+                        codec => "json"
+                    	decorate_events => true
+                      }
+                      kafka {
+                        bootstrap_servers => "localhost:9092"
+                        topics => ["error-processed-events"]
+                        group_id => "error-processed-events-group"
+                        codec => "json"
+                    	decorate_events => true
+                      }
+                    }
 
-            with non ssl:
-                      output {
+                    filter {
+                    }
+
+                    output {
+                      if [@metadata][kafka][topic] == "click-processed-events" {
                         elasticsearch {
-                          hosts => ["http://localhost:9200"]    # Replace with your Elasticsearch URL
-                          index => "processed-events-index"     # Replace with your desired index name
-                      #    document_id => "%{id}"               # Optional: Use a unique field as document ID
-                      	document_id => "%{[eventId]}"         # Unique ID for deduplication
+                          hosts => ["http://localhost:9200"]
+                          index => "click-processed-events-index"
+                          document_id => "%{[eventId]}"
                         }
-
-                        # Optional: Debugging output
-                        stdout {
-                          codec => rubydebug
-                        }
-                      }
-
-             with  ssl:
-                      output {
+                      } else if [@metadata][kafka][topic] == "view-processed-events" {
                         elasticsearch {
-                          hosts => ["https://localhost:9200"]
-                          user => "elastic"
-                          password => "Z9Ei3Etp-LYD4Ll*IsGs"
-                          ssl => true
-                          cacert => "C:/elastic-stack/elasticsearch-8.17.0/config/certs/http_ca.crt" # Path to the CA certificate
-                      	index => "processed-events-index"     # Replace with your desired index name
-                      	document_id => "%{[eventId]}"         # Unique ID for deduplication (adjust field if needed)
+                          hosts => ["http://localhost:9200"]
+                          index => "view-processed-events-index"
+                          document_id => "%{[eventId]}"
                         }
-
-                        stdout {
-                          codec => rubydebug                        # Optional: Debug output to console
+                      } else if [@metadata][kafka][topic] == "purchase-processed-events" {
+                        elasticsearch {
+                          hosts => ["http://localhost:9200"]
+                          index => "purchase-processed-events-index"
+                          document_id => "%{[eventId]}"
                         }
+                      } else if [@metadata][kafka][topic] == "search-processed-events" {
+                        elasticsearch {
+                          hosts => ["http://localhost:9200"]
+                          index => "search-processed-events-index"
+                          document_id => "%{[eventId]}"
+                        }
+                      } else if [@metadata][kafka][topic] == "error-processed-events" {
+                        elasticsearch {
+                          hosts => ["http://localhost:9200"]
+                          index => "error-processed-events-index"
+                          document_id => "%{[eventId]}"
+                        }
+                      } else {
+                        stdout { codec => rubydebug } # Debug output for unmatched events
                       }
+                    }
+
 
         Start server:
         logstash -f C:\elastic-stack\logstash-8.17.0\config\kafka-to-elasticsearch.conf
+
+
