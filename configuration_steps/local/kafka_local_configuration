@@ -26,7 +26,7 @@ Topic creation:
 
       kafka-topics.bat --create --topic purchase-processed-events --bootstrap-server localhost:9092 --replication-factor 1 --partitions 3
 
-Create a consumer group:
+Create and run  consumer  group:
       kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic error-processed-events --group error-processed-group
 
       kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic search-processed-events --group search-processed-group

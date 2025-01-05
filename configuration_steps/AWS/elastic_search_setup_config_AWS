@@ -155,7 +155,9 @@ Step 7 — start Elasticsearch
       restart server:
         - sudo systemctl restart elasticsearch
       server status:
-         - sudo systemctl status elasticsearch.service  OR sudo systemctl status elasticsearch
+         - sudo systemctl status elasticsearch.service OR sudo systemctl status elasticsearch
+      Stop server:
+        - sudo systemctl stop elasticsearch
 
 
 Step 8 — Testing Elasticsearch
@@ -178,8 +180,13 @@ Step 8 — Testing Elasticsearch
                   },
                   "tagline" : "You Know, for Search"
                 }
-        Check if documents are being indexed in Elasticsearch:
-        - curl -X GET "http://15.206.212.238:9200/processed-events-index/_search?pretty"
+
+
+Lists all indices in Elasticsearch:
+    curl -X GET "http://15.206.212.238:9200/_cat/indices?v"
+
+Return all documents in the index:
+    curl -X GET "http://15.206.212.238:9200/click-processed-events-index/_search?pretty"
 
 ################################################################################################
 ################################################################################################
