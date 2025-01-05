@@ -21,7 +21,7 @@ public class KafkaStreamsConfig {
 
         Properties config = new Properties();
         config.put(StreamsConfig.APPLICATION_ID_CONFIG, "Analytic-Dashboard-kafka-streams-app");
-        config.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        config.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "13.203.157.163:9092");
         config.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         config.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
         config.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
@@ -30,8 +30,13 @@ public class KafkaStreamsConfig {
 
         // Define the source stream and Filter for "click" events
         KStream<String, String> sourceStream = builder.stream("raw-events");
+
+        sourceStream.peek((key, value) -> System.out.println("Received event - Key: " + key + ", Value: " + value));
+
         // Split the stream into multiple substreams based on event types
-        KStream<String, String>[] branches = sourceStream.branch(
+        KStream<String, String>[] branches = sourceStream
+                .filter((key, value) -> value != null && !value.trim().isEmpty())
+                .branch(
                 (key, value) -> value.contains("click"),    // Branch 1: Click events
                 (key, value) -> value.contains("view"),
                 (key, value) -> value.contains("search"),// Branch 2: View events
