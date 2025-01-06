@@ -1,5 +1,5 @@
 #############################################
-###### Elastic Search Setup and Process #####
+######### Start Elastic Search Setup ########
 #############################################
 
         Elastic search Installation Directory -  cd C:\elastic-stack\elasticsearch-8.17.0
@@ -46,10 +46,19 @@
         Generate New Token :
             Goto directory "C:\elastic-stack\elasticsearch-8.17.0\bin" run  "elasticsearch-create-enrollment-token -s kibana"
 
+#############################################
+########## End Elastic Search Setup #########
+#############################################
+
+#############################################
+#### Start Elastic Search Testing Process ###
+#############################################
         Lists all indices in Elasticsearch:
             curl -X GET "http://localhost:9200/_cat/indices?v"
 
         Return all documents in the index:
-            curl -X GET "http://localhost:9200/processed-events-index/_search?pretty"
+            curl -X GET "http://localhost:9200/click-processed-events-index/_search?pretty"
 
-        For Connectivity issue between ElasticSearch and kibana:###########################
+#############################################
+#### Start Elastic Search Testing Process ###
+#############################################
