@@ -33,3 +33,23 @@
         2. kafka stream consumes it and processes and send it to processed-events consumer
         3. Automatically picked by logstash from mentioned topic "processed-events"
         4. Send it to the ElasticSearch
+
+
+#############################################
+################# Infra Info ################
+#############################################
+
+Lambda Function Name - AnalyticDynamoToKafka
+
+Dynamodb Table Name - UserEventLogs
+
+IAM user Group - Analytic_Development_Group | PDES-JOSS
+
+Policies - AmazonDynamoDBFullAccess, DynamodbStream, AWSLambdaBasicExecutionRole-2c05b619-2a64-43a6-9b4c-0b89113ad503
+
+
+
+
+
+
+

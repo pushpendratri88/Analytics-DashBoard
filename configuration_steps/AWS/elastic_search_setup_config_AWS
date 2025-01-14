@@ -161,7 +161,7 @@ Step 7 — start Elasticsearch
 
 
 Step 8 — Testing Elasticsearch
-        - curl -X GET 'http://localhost:9200'
+        - curl -X GET 'http://15.206.212.238:9200'
         Output should look like this:
                 {
                   "name" : "ip-172-31-2-137",

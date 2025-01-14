@@ -1,9 +1,10 @@
-{"eventId": "1","eventType": "click","timestamp": "2024-12-12T10:00:00Z","userId": "user1","sessionId": "abcd1234","url": "https://example.com/product/123","device": { "type": "mobile", "os": "iOS", "browser": "Safari" },"location": { "country": "USA", "city": "San Francisco" },"eventDetails": { "buttonId": "addToCart" }}
+{"eventId": "101","eventType": "click","timestamp": "2024-12-12T10:00:00Z","userId": "Akshu","sessionId": "abcd1234","url": "https://example.com/product/123","device": { "type": "mobile", "os": "iOS", "browser": "Safari" },"location": { "country": "USA", "city": "San Francisco" },"eventDetails": { "buttonId": "addToCart" }}
 
-{"eventId": "2","eventType": "view","timestamp": "2024-12-12T10:02:00Z","userId": "user2","sessionId": "efgh5678","url": "https://example.com/category/electronics","device": { "type": "desktop", "os": "Windows", "browser": "Chrome" },"location": { "country": "India", "city": "Bangalore" },"eventDetails": { "duration": 15.4 }}
+{"eventId": "102","eventType": "view","timestamp": "2024-12-12T10:02:00Z","userId": "amit","sessionId": "efgh5678","url": "https://example.com/category/electronics","device": { "type": "desktop", "os": "Windows", "browser": "Chrome" },"location": { "country": "India", "city": "Bangalore" },"eventDetails": { "duration": 15.4 }}
 
-{"eventId": "3","eventType": "search","timestamp": "2024-12-12T10:03:30Z","userId": "user1","sessionId": "abcd1234","query": "wireless headphones","device": { "type": "mobile", "os": "iOS", "browser": "Safari" },"location": { "country": "USA", "city": "San Francisco" }}
+{"eventId": "103","eventType": "search","timestamp": "2024-12-12T10:03:30Z","userId": "
+lamit","sessionId": "abcd1234","query": "wireless headphones","device": { "type": "mobile", "os": "iOS", "browser": "Safari" },"location": { "country": "USA", "city": "San Francisco" }}
 
-{"eventId": "4","eventType": "purchase","timestamp": "2024-12-12T10:05:00Z","userId": "user3","sessionId": "ijkl9012","orderId": "order123","amount": 299.99,"currency": "USD","device": { "type": "tablet", "os": "Android", "browser": "Firefox" },"location": { "country": "UK", "city": "London" }}
+{"eventId": "104","eventType": "purchase","timestamp": "2024-12-12T10:05:00Z","userId": "akshu","sessionId": "ijkl9012","orderId": "order123","amount": 299.99,"currency": "USD","device": { "type": "tablet", "os": "Android", "browser": "Firefox" },"location": { "country": "UK", "city": "London" }}
 
-{"eventId": "5","eventType": "error","timestamp": "2024-12-12T10:06:45Z","userId": "user2","sessionId": "efgh5678","url": "https://example.com/checkout","errorCode": "500","errorMessage": "Internal Server Error","device": { "type": "desktop", "os": "Windows", "browser": "Chrome" },"location": { "country": "India", "city": "Bangalore" }}
+{"eventId": "105","eventType": "error","timestamp": "2024-12-12T10:06:45Z","userId": "anil","sessionId": "efgh5678","url": "https://example.com/checkout","errorCode": "500","errorMessage": "Internal Server Error","device": { "type": "desktop", "os": "Windows", "browser": "Chrome" },"location": { "country": "India", "city": "Bangalore" }}

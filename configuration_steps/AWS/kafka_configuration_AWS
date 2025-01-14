@@ -70,78 +70,77 @@ Step 6 (Start Zookeeper and Kafka):
 Step 7: Testing the Installation
 
 		Create a Topic:
-			-  ~/kafka_2.13-3.6.0/bin/kafka-topics.sh --create --topic raw-events --bootstrap-server localhost:9092 --partitions 3 --replication-factor 1
+			-  ~/kafka_2.13-3.6.0/bin/kafka-topics.sh --create --topic raw-events --bootstrap-server 13.203.157.163:9092 --partitions 3 --replication-factor 1
 
-			-  ~/kafka_2.13-3.6.0/bin/kafka-topics.sh --create --topic processed-events --bootstrap-server localhost:9092 --partitions 3 --replication-factor 1
+			-  ~/kafka_2.13-3.6.0/bin/kafka-topics.sh --create --topic processed-events --bootstrap-server 13.203.157.163:9092 --partitions 3 --replication-factor 1
 
-			-  ~/kafka_2.13-3.6.0/bin/kafka-topics.sh --create --topic error-processed-events --bootstrap-server localhost:9092 --partitions 3 --replication-factor 1
+			-  ~/kafka_2.13-3.6.0/bin/kafka-topics.sh --create --topic error-processed-events --bootstrap-server 13.203.157.163:9092 --partitions 3 --replication-factor 1
 
-            -  ~/kafka_2.13-3.6.0/bin/kafka-topics.sh --create --topic search-processed-events --bootstrap-server localhost:9092 --partitions 3 --replication-factor 1
+            -  ~/kafka_2.13-3.6.0/bin/kafka-topics.sh --create --topic search-processed-events --bootstrap-server 13.203.157.163:9092 --partitions 3 --replication-factor 1
 
-            -  ~/kafka_2.13-3.6.0/bin/kafka-topics.sh --create --topic click-processed-events --bootstrap-server localhost:9092 --partitions 3 --replication-factor 1
+            -  ~/kafka_2.13-3.6.0/bin/kafka-topics.sh --create --topic click-processed-events --bootstrap-server 13.203.157.163:9092 --partitions 3 --replication-factor 1
 
-            -  ~/kafka_2.13-3.6.0/bin/kafka-topics.sh --create --topic view-processed-events --bootstrap-server localhost:9092 --partitions 3 --replication-factor 1
+            -  ~/kafka_2.13-3.6.0/bin/kafka-topics.sh --create --topic view-processed-events --bootstrap-server 13.203.157.163:9092 --partitions 3 --replication-factor 1
 
-            -  ~/kafka_2.13-3.6.0/bin/kafka-topics.sh --create --topic purchase-processed-events --bootstrap-server localhost:9092 --partitions 3 --replication-factor 1
+            -  ~/kafka_2.13-3.6.0/bin/kafka-topics.sh --create --topic purchase-processed-events --bootstrap-server 13.203.157.163:9092 --partitions 3 --replication-factor 1
 
 		List Topics:
-			-  ~/kafka_2.13-3.6.0/bin/kafka-topics.sh --list --bootstrap-server localhost:9092
+			-  ~/kafka_2.13-3.6.0/bin/kafka-topics.sh --list --bootstrap-server 13.203.157.163:9092
+			
+		Discribe Topic :
+			- 	~/kafka_2.13-3.6.0/bin/kafka-topics.sh --bootstrap-server 13.203.157.163:9092 --describe --topic raw-events
+		
+		
 
         Create a consumer group:
-            -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic error-processed-events --group error-processed-group
+            -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server 13.203.157.163:9092 --topic error-processed-events --group error-processed-events-group
 
-            -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic search-processed-events --group search-processed-group
+            -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server 13.203.157.163:9092 --topic search-processed-events --group search-processed-events-group
 
-            -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic click-processed-events --group click-processed-group
+            -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server 13.203.157.163:9092 --topic click-processed-events --group click-processed-events-group
 
-            -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic view-processed-events --group view-processed-group
+            -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server 13.203.157.163:9092 --topic view-processed-events --group view-processed-events-group
 
-            -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic purchase-processed-events --group purchase-processed-group
+            -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server 13.203.157.163:9092 --topic purchase-processed-events --group purchase-processed-events-group
 
 		List Consumer Groups:
-             -  ~/kafka_2.13-3.6.0/bin/kafka-consumer-groups.sh --list --bootstrap-server localhost:9092
+             -  ~/kafka_2.13-3.6.0/bin/kafka-consumer-groups.sh --list --bootstrap-server 13.203.157.163:9092
 
 		Start a Kafka producer for raw-events:
-			-  ~/kafka_2.13-3.6.0/bin/kafka-console-producer.sh --topic raw-events --bootstrap-server localhost:9092
+			-  ~/kafka_2.13-3.6.0/bin/kafka-console-producer.sh --topic raw-events --bootstrap-server 13.203.157.163:9092
 
-		Start Kafka consumer for raw-events:
-			-  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --topic raw-events --from-beginning --bootstrap-server localhost:9092
+		Create Consumer group and Start Kafka consumer for raw-events:
+			-  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --topic raw-events --from-beginning --bootstrap-server 13.203.157.163:9092
 
-		Start a Kafka producer for processed-events:
-			-  ~/kafka_2.13-3.6.0/bin/kafka-console-producer.sh --topic processed-events --bootstrap-server localhost:9092
+        Create Consumer group and Start a Kafka producer for error-processed-events:
+        	-  ~/kafka_2.13-3.6.0/bin/kafka-console-producer.sh --topic error-processed-events --bootstrap-server 13.203.157.163:9092
 
-		Start Kafka consumer for processed-events:
-			-  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --topic processed-events --from-beginning --bootstrap-server localhost:9092
+        Create Consumer group and Start Kafka consumer for error-processed-events:
+            -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server 13.203.157.163:9092 --topic error-processed-events --group error-processed-events-group
 
-        Start a Kafka producer for error-processed-events:
-        	-  ~/kafka_2.13-3.6.0/bin/kafka-console-producer.sh --topic error-processed-events --bootstrap-server localhost:9092
+        Create Consumer group and Start a Kafka producer for click-processed-events:
+            -  ~/kafka_2.13-3.6.0/bin/kafka-console-producer.sh --topic click-processed-events --bootstrap-server 13.203.157.163:9092
 
-        Start Kafka consumer for error-processed-events:
-            -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic error-processed-events --group error-processed-events-group
+        Create Consumer group and Start Kafka consumer for click-processed-events:
+            -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server 13.203.157.163:9092 --topic click-processed-events --group click-processed-events-group
 
-        Start a Kafka producer for click-processed-events:
-            -  ~/kafka_2.13-3.6.0/bin/kafka-console-producer.sh --topic click-processed-events --bootstrap-server localhost:9092
+        Create Consumer group and Start a Kafka producer for view-processed-events:
+            -  ~/kafka_2.13-3.6.0/bin/kafka-console-producer.sh --topic view-processed-events --bootstrap-server 13.203.157.163:9092
 
-        Start Kafka consumer for click-processed-events:
-            -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic click-processed-events --group click-processed-events-group
+        Create Consumer group and Start Kafka consumer for view-processed-events:
+            -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server 13.203.157.163:9092 --topic view-processed-events --group view-processed-events-group
 
-        Start a Kafka producer for view-processed-events:
-            -  ~/kafka_2.13-3.6.0/bin/kafka-console-producer.sh --topic view-processed-events --bootstrap-server localhost:9092
+        Create Consumer group and Start a Kafka producer for search-processed-events:
+            -  ~/kafka_2.13-3.6.0/bin/kafka-console-producer.sh --topic search-processed-events --bootstrap-server 13.203.157.163:9092
 
-        Start Kafka consumer for view-processed-events:
-            -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic view-processed-events --group view-processed-events-group
+        Create Consumer group and Start Kafka consumer for search-processed-events:
+            -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server 13.203.157.163:9092 --search view-processed-events --group search-processed-events-group
 
-        Start a Kafka producer for search-processed-events:
-            -  ~/kafka_2.13-3.6.0/bin/kafka-console-producer.sh --topic search-processed-events --bootstrap-server localhost:9092
+        Create Consumer group and Start a Kafka producer for purchase-processed-events:
+            -  ~/kafka_2.13-3.6.0/bin/kafka-console-producer.sh --topic purchase-processed-events --bootstrap-server 13.203.157.163:9092
 
-        Start Kafka consumer for search-processed-events:
-            -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --search view-processed-events --group search-processed-events-group
-
-        Start a Kafka producer for purchase-processed-events:
-            -  ~/kafka_2.13-3.6.0/bin/kafka-console-producer.sh --topic purchase-processed-events --bootstrap-server localhost:9092
-
-        Start Kafka consumer for purchase-processed-events:
-            -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --search purchase-processed-events --group purchase-processed-events-group
+        Create Consumer group and Start Kafka consumer for purchase-processed-events:
+            -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server 13.203.157.163:9092 --search purchase-processed-events --group purchase-processed-events-group
 
 
 Step 8: Setting Up Kafka as a Systemd Service
