@@ -25,13 +25,14 @@ Step 4 (Download and Extract Kafka)-
 			- tar -xvzf ~/Downloads/kafka_2.13-3.6.0.tgz -C ~/
 
 Step 5 (Configure Kafka) :
-	Configure Zookeeper:
+        Configure Zookeeper:
 		Create a data directory for Zookeeper:
 		   - mkdir -p ~/kafka_2.13-3.6.0/data/zookeeper
 		Edit the Zookeeper configuration file:
            - nano ~/kafka_2.13-3.6.0/config/zookeeper.properties
 		Update the dataDir property to point to the new data directory:
            - dataDir=/home/kafka/kafka_2.13-3.6.0/data/zookeeper
+		   
 	Configure Kafka Broker:
 		Create a data directory for Kafka:
 		   - mkdir -p ~/kafka_2.13-3.6.0/data/kafka
@@ -41,19 +42,8 @@ Step 5 (Configure Kafka) :
 		   - log.dirs=/home/kafka/kafka_2.13-3.6.0/data/kafka
 		   - zookeeper.connect=localhost:2181
 
-Step 6 (Start Zookeeper and Kafka):
-	Start Zookeeper:
-		- ~/kafka_2.13-3.6.0/bin/zookeeper-server-start.sh ~/kafka_2.13-3.6.0/config/zookeeper.properties
-	Status zookeeper:
-	    - sudo systemctl status zookeeper
 
-	Start Kafka:
-		- ~/kafka_2.13-3.6.0/bin/kafka-server-start.sh ~/kafka_2.13-3.6.0/config/server.properties
-
-	Status Kafka:
-	    - sudo systemctl status kafka
-
-	if server unable to start due to memory issue try below commands :
+Step 6	if server unable to start due to memory issue try below commands :
         Add Swap Space :
             1. Create a swap file: Create a swap file: sudo fallocate -l 1G /swapfile
             2. Set the correct permissions: sudo chmod 600 /swapfile
@@ -62,10 +52,23 @@ Step 6 (Start Zookeeper and Kafka):
             5. Verify the swap space: swapon --show
                                       free -h
             6. Make the swap space permanent by adding it to /etc/fstab:
-                - echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+                - /swapfile none swap sw 0 0
+
+				               OR
+
+		Remove and add Swap Space with 2GB:
+			1. Check if Swap is Active : sudo swapon --show
+			2. Turn Off Existing Swap (if active) : sudo swapoff /swapfile
+			3. Remove the Existing Swap File (if needed) : sudo rm /swapfile
+			4. Create a New Swap File Using dd (Alternative to fallocate) : sudo dd if=/dev/zero of=/swapfile bs=1M count=2048
+			5. Set Correct Permissions : sudo chmod 600 /swapfile
+			6. Format the File as Swap : sudo mkswap /swapfile
+			7. Enable the Swap : sudo swapon /swapfile
+			8. Make the swap space permanent by adding it to /etc/fstab:
+                - /swapfile none swap sw 0 0
 
 		Restart Kafka:
-            - ~/kafka_2.13-3.6.0/bin/kafka-server-start.sh ~/kafka_2.13-3.6.0/config/server.properties
+            - sudo systemctl restart kafka
 
 Step 7: Testing the Installation
 
@@ -84,123 +87,71 @@ Step 7: Testing the Installation
 
             -  ~/kafka_2.13-3.6.0/bin/kafka-topics.sh --create --topic purchase-processed-events --bootstrap-server 13.203.157.163:9092 --partitions 3 --replication-factor 1
 
-		List Topics:
-			-  ~/kafka_2.13-3.6.0/bin/kafka-topics.sh --list --bootstrap-server 13.203.157.163:9092
-			
-		Discribe Topic :
-			- 	~/kafka_2.13-3.6.0/bin/kafka-topics.sh --bootstrap-server 13.203.157.163:9092 --describe --topic raw-events
-		
-		
-
-        Create a consumer group:
-            -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server 13.203.157.163:9092 --topic error-processed-events --group error-processed-events-group
-
-            -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server 13.203.157.163:9092 --topic search-processed-events --group search-processed-events-group
-
-            -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server 13.203.157.163:9092 --topic click-processed-events --group click-processed-events-group
-
-            -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server 13.203.157.163:9092 --topic view-processed-events --group view-processed-events-group
-
-            -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server 13.203.157.163:9092 --topic purchase-processed-events --group purchase-processed-events-group
-
-		List Consumer Groups:
-             -  ~/kafka_2.13-3.6.0/bin/kafka-consumer-groups.sh --list --bootstrap-server 13.203.157.163:9092
-
-		Start a Kafka producer for raw-events:
-			-  ~/kafka_2.13-3.6.0/bin/kafka-console-producer.sh --topic raw-events --bootstrap-server 13.203.157.163:9092
-
-		Create Consumer group and Start Kafka consumer for raw-events:
-			-  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --topic raw-events --from-beginning --bootstrap-server 13.203.157.163:9092
-
-        Create Consumer group and Start a Kafka producer for error-processed-events:
-        	-  ~/kafka_2.13-3.6.0/bin/kafka-console-producer.sh --topic error-processed-events --bootstrap-server 13.203.157.163:9092
-
-        Create Consumer group and Start Kafka consumer for error-processed-events:
-            -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server 13.203.157.163:9092 --topic error-processed-events --group error-processed-events-group
-
-        Create Consumer group and Start a Kafka producer for click-processed-events:
-            -  ~/kafka_2.13-3.6.0/bin/kafka-console-producer.sh --topic click-processed-events --bootstrap-server 13.203.157.163:9092
-
-        Create Consumer group and Start Kafka consumer for click-processed-events:
-            -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server 13.203.157.163:9092 --topic click-processed-events --group click-processed-events-group
-
-        Create Consumer group and Start a Kafka producer for view-processed-events:
-            -  ~/kafka_2.13-3.6.0/bin/kafka-console-producer.sh --topic view-processed-events --bootstrap-server 13.203.157.163:9092
-
-        Create Consumer group and Start Kafka consumer for view-processed-events:
-            -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server 13.203.157.163:9092 --topic view-processed-events --group view-processed-events-group
-
-        Create Consumer group and Start a Kafka producer for search-processed-events:
-            -  ~/kafka_2.13-3.6.0/bin/kafka-console-producer.sh --topic search-processed-events --bootstrap-server 13.203.157.163:9092
-
-        Create Consumer group and Start Kafka consumer for search-processed-events:
-            -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server 13.203.157.163:9092 --search view-processed-events --group search-processed-events-group
-
-        Create Consumer group and Start a Kafka producer for purchase-processed-events:
-            -  ~/kafka_2.13-3.6.0/bin/kafka-console-producer.sh --topic purchase-processed-events --bootstrap-server 13.203.157.163:9092
-
-        Create Consumer group and Start Kafka consumer for purchase-processed-events:
-            -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server 13.203.157.163:9092 --search purchase-processed-events --group purchase-processed-events-group
-
 
 Step 8: Setting Up Kafka as a Systemd Service
+
 		Create a new systemd service file for Zookeeper:
 			sudo nano /etc/systemd/system/zookeeper.service
 
-		Add the following content:
-			[Unit]
-			Description=Apache Zookeeper server
-			Documentation=http://zookeeper.apache.org
-			After=network.target
+                Add the following content and Save it:
+                    [Unit]
+                    Description=Apache Zookeeper server
+                    Documentation=http://zookeeper.apache.org
+                    After=network.target
 
-			[Service]
-			Type=simple
-			User=kafka
-			ExecStart=/home/kafka/kafka_2.13-3.6.0/bin/zookeeper-server-start.sh /home/kafka/kafka_2.13-3.6.0/config/zookeeper.properties
-			ExecStop=/home/kafka/kafka_2.13-3.6.0/bin/zookeeper-server-stop.sh
-			Restart=on-abnormal
+                    [Service]
+                    Type=simple
+                    User=kafka
+                    ExecStart=/home/kafka/kafka_2.13-3.6.0/bin/zookeeper-server-start.sh /home/kafka/kafka_2.13-3.6.0/config/zookeeper.properties
+                    ExecStop=/home/kafka/kafka_2.13-3.6.0/bin/zookeeper-server-stop.sh
+                    Restart=on-abnormal
 
-			[Install]
-			WantedBy=multi-user.target
-		cltr + x
-		y to save file
-		enter
+                    [Install]
+                    WantedBy=multi-user.target
+
 
 		Create a new systemd service file for Kafka:
 			sudo nano /etc/systemd/system/kafka.service
 
-		Add the following content:
-			[Unit]
-			Description=Apache Kafka server
-			Documentation=http://kafka.apache.org/documentation.html
-			After=network.target zookeeper.service
+                Add the following content:
+                    [Unit]
+                    Description=Apache Kafka server
+                    Documentation=http://kafka.apache.org/documentation.html
+                    After=network.target zookeeper.service
 
-			[Service]
-			Type=simple
-			User=kafka
-			ExecStart=/home/kafka/kafka_2.13-3.6.0/bin/kafka-server-start.sh /home/kafka/kafka_2.13-3.6.0/config/server.properties
-			ExecStop=/home/kafka/kafka_2.13-3.6.0/bin/kafka-server-stop.sh
-			Restart=on-abnormal
+                    [Service]
+                    Type=simple
+                    User=kafka
+                    ExecStart=/home/kafka/kafka_2.13-3.6.0/bin/kafka-server-start.sh /home/kafka/kafka_2.13-3.6.0/config/server.properties
+                    ExecStop=/home/kafka/kafka_2.13-3.6.0/bin/kafka-server-stop.sh
+                    Restart=on-abnormal
 
-			[Install]
-			WantedBy=multi-user.target
+                    [Install]
+                    WantedBy=multi-user.target
 
-		cltr + x
-		y to save file
-		enter
 
 		Start and Enable the Services Reload systemd to apply the new service files:
 			-  sudo systemctl daemon-reload
 
-		Start and enable Zookeeper:
-			-  sudo systemctl start zookeeper
-            -  sudo systemctl enable zookeeper
+Step 9 : Kafka Server startup and Status:
+            Start and enable Zookeeper:
+                -  sudo systemctl start zookeeper  OR  ~/kafka_2.13-3.6.0/bin/zookeeper-server-start.sh ~/kafka_2.13-3.6.0/config/zookeeper.properties
+                -  sudo systemctl enable zookeeper
+                -  sudo systemctl status zookeeper
+                -  sudo systemctl restart zookeeper
+                -  sudo systemctl stop zookeeper  OR  ~/kafka_2.13-3.6.0/bin/zookeeper-server-stop.sh
 
-		Start and enable Kafka:
-			-  sudo systemctl start kafka
-			-  sudo systemctl enable kafka
+            Start and enable Kafka:
+                -  sudo systemctl start kafka  OR  ~/kafka_2.13-3.6.0/bin/kafka-server-start.sh ~/kafka_2.13-3.6.0/config/server.properties
+                -  sudo systemctl enable kafka
+                -  sudo systemctl status kafka
+                -  sudo systemctl restart kafka
+                -  sudo systemctl stop kafka  OR  ~/kafka_2.13-3.6.0/bin/kafka-server-stop.sh
 
-Step 9 : Kafka Configuration to allow the traffic from anywhere
+            Server Log :
+                - cat /home/kafka/kafka_2.13-3.6.0/logs/server.log | less
+
+Step 10 : Kafka Configuration to allow the traffic from anywhere
         Update Kafka Configuration:
             -  nano /home/kafka/kafka_2.13-3.6.0/config/server.properties
         Update the following properties:
@@ -219,3 +170,51 @@ Step 9 : Kafka Configuration to allow the traffic from anywhere
             -  config.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "13.203.157.163:9092");
 
 
+#########################################
+###### Kafka Server Operations #####
+#########################################
+List Consumer Groups:
+             -  ~/kafka_2.13-3.6.0/bin/kafka-consumer-groups.sh --list --bootstrap-server 13.203.157.163:9092
+
+List Topics:
+			-  ~/kafka_2.13-3.6.0/bin/kafka-topics.sh --list --bootstrap-server 13.203.157.163:9092
+
+Describe Topic :
+            - 	~/kafka_2.13-3.6.0/bin/kafka-topics.sh --bootstrap-server 13.203.157.163:9092 --describe --topic raw-events
+
+
+Start a Kafka producer for raw-events:
+			-  ~/kafka_2.13-3.6.0/bin/kafka-console-producer.sh --topic raw-events --bootstrap-server 13.203.157.163:9092
+
+Start Kafka consumer for raw-events:
+			-  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --topic raw-events --from-beginning --bootstrap-server 13.203.157.163:9092
+
+Create Consumer group and Start a Kafka producer for error-processed-events:
+    -  ~/kafka_2.13-3.6.0/bin/kafka-console-producer.sh --topic error-processed-events --bootstrap-server 13.203.157.163:9092
+
+Create Consumer group and Start Kafka consumer for error-processed-events:
+    -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server 13.203.157.163:9092 --topic error-processed-events --group error-processed-events-group
+
+Create Consumer group and Start a Kafka producer for click-processed-events:
+    -  ~/kafka_2.13-3.6.0/bin/kafka-console-producer.sh --topic click-processed-events --bootstrap-server 13.203.157.163:9092
+
+Create Consumer group and Start Kafka consumer for click-processed-events:
+    -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server 13.203.157.163:9092 --topic click-processed-events --group click-processed-events-group
+
+Create Consumer group and Start a Kafka producer for view-processed-events:
+    -  ~/kafka_2.13-3.6.0/bin/kafka-console-producer.sh --topic view-processed-events --bootstrap-server 13.203.157.163:9092
+
+Create Consumer group and Start Kafka consumer for view-processed-events:
+    -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server 13.203.157.163:9092 --topic view-processed-events --group view-processed-events-group
+
+Create Consumer group and Start a Kafka producer for search-processed-events:
+    -  ~/kafka_2.13-3.6.0/bin/kafka-console-producer.sh --topic search-processed-events --bootstrap-server 13.203.157.163:9092
+
+Create Consumer group and Start Kafka consumer for search-processed-events:
+    -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server 13.203.157.163:9092 --topic search-processed-events --group search-processed-events-group
+
+Create Consumer group and Start a Kafka producer for purchase-processed-events:
+    -  ~/kafka_2.13-3.6.0/bin/kafka-console-producer.sh --topic purchase-processed-events --bootstrap-server 13.203.157.163:9092
+
+Create Consumer group and Start Kafka consumer for purchase-processed-events:
+    -  ~/kafka_2.13-3.6.0/bin/kafka-console-consumer.sh --bootstrap-server 13.203.157.163:9092 --topic purchase-processed-events --group purchase-processed-events-group

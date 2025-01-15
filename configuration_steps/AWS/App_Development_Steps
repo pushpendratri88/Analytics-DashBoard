@@ -19,5 +19,55 @@ deployment steps for Spring Boot application in Linux VM
 
 5) Enable Embedded Server port num in security group outbound rule
     9092
+======================================================
+deployment steps for Spring Boot application in Linux VM
+=======================================================
+
+
+======================================================
+Setting Up Analytic Application as a Systemd Service
+=======================================================
+
+1. Create a new systemd service file for Zookeeper:
+    sudo nano /etc/systemd/system/analytic-app.service
+
+2. Add the following content:
+	[Unit]
+	Description=Analytics Stream Springboot Application
+	After=syslog.target
+	After=network.target
+
+	[Service]
+	User=ubuntu
+	ExecStart=/usr/bin/java -jar /home/ubuntu/AnalyticsDashBoard/target/AnalyticsDashboard-0.0.1-SNAPSHOT.jar 
+	SuccessExitStatus=143
+	Restart=on-failure
+	RestartSec=10
+	StandardOutput=syslog
+	StandardError=syslog
+	SyslogIdentifier=analytic-app
+
+	[Install]
+	WantedBy=multi-user.target
+	
+3. sudo systemctl daemon-reload
+4. sudo systemctl start analytic-app
+5. sudo systemctl enable analytic-app
+6. sudo systemctl status analytic-app
+7. sudo journalctl -u analytic-app -f
+8. sudo systemctl restart analytic-app
+
+
+if server unable to start due to memory issue try below commands :
+        Add Swap Space :
+            1. Create a swap file: Create a swap file: sudo fallocate -l 2G /swapfile
+            2. Set the correct permissions: sudo chmod 600 /swapfile
+            3. Set up the swap space:  sudo mkswap /swapfile
+            4. Enable the swap file: sudo swapon /swapfile
+            5. Verify the swap space: swapon --show
+                                      free -h
+            6. Make the swap space permanent by adding it to /etc/fstab:
+                - /swapfile none swap sw 0 0
+
 
 =========================================================================
